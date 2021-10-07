@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TrackingShipment</string>
+    <string name="tracking_shipment">택배조회</string>
+    <string name="tracking_number">운송장 번호 조회</string>
+    <string name="pick_tracking_company">택배 회사 선택하기</string>
+    <string name="hide">숨기기</string>
+    <string name="do_tracking">조회하기</string>
 </resources>
