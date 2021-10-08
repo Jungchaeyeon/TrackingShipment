@@ -79,6 +79,7 @@
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="4dp"
                     app:chipSpacingVertical="4dp"
+                    app:selectionRequired="true"
                     app:singleSelection="true" />
 
                 <androidx.appcompat.widget.AppCompatButton

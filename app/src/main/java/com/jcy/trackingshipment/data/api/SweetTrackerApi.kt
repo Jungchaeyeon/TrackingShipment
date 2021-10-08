@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface SweetTrackerApi {
 
     //택배사 목록 조회
-    @GET("/api/v1/companylist?t_key=${BuildConfig.SWEET_TRACKER_API_KEY}")
+    @GET("api/v1/companylist?t_key=${BuildConfig.SWEET_TRACKER_API_KEY}")
     suspend fun getCompanyLists() : Response<ShippingCompanies>
 
 //    //운송장 번호 조회

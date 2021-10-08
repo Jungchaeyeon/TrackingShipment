@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 val appModule = module{
-    single { TrackingViewModel() }
+    single { TrackingViewModel(get()) }
 
     single { Dispatchers.IO }
 

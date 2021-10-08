@@ -17,22 +17,22 @@ class ShippingCompanyRepositoryImpl(
 
     override suspend fun getShippingCompananies(): List<ShippingCompany> = withContext(dispatcher) {
 
-//        val currentTimeMillis = System.currentTimeMillis()
-//        val lastDatabaseUpdatedTimeMillis = preferenceManager.getLong(KEY_LAST_DATABASE_UPDATED_TIME_MILLIS)
-//
-//        if(lastDatabaseUpdatedTimeMillis == null ||
-//                CACHE_MAX_AGE_MILLIS < (currentTimeMillis - lastDatabaseUpdatedTimeMillis))
-//                {
+        val currentTimeMillis = System.currentTimeMillis()
+        val lastDatabaseUpdatedTimeMillis = preferenceManager.getLong(KEY_LAST_DATABASE_UPDATED_TIME_MILLIS)
+
+        if(lastDatabaseUpdatedTimeMillis == null ||
+                CACHE_MAX_AGE_MILLIS < (currentTimeMillis - lastDatabaseUpdatedTimeMillis))
+                {
                     val shippingCompanies = trackerApi.getCompanyLists()
                         .body()
                         ?.shippingCompanies
                         ?: emptyList()
-                    //shippingCompanyDao.insert(shippingCompanies)
-                   // preferenceManager.putLong(KEY_LAST_DATABASE_UPDATED_TIME_MILLIS, currentTimeMillis)
 
-        Log.e("택배회사목록",shippingCompanies.toString())
-        //}
-        shippingCompanyDao.getAll()
+                    shippingCompanyDao.insert(shippingCompanies)
+                    preferenceManager.putLong(KEY_LAST_DATABASE_UPDATED_TIME_MILLIS, currentTimeMillis)
+
+        }
+       shippingCompanyDao.getAll()
     }
     companion object {
         private const val KEY_LAST_DATABASE_UPDATED_TIME_MILLIS = "KEY_LAST_DATABASE_UPDATED_TIME_MILLIS"
