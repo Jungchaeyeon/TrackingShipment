@@ -1,5 +1,6 @@
 package com.jcy.trackingshipment.presentation.trackingItem
 
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -15,12 +16,20 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
 
     override fun getViewBinding(): ActivityTrackingBinding = ActivityTrackingBinding.inflate(layoutInflater)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.vm = viewModel
+        binding.vi = this
+        binding.lifecycleOwner = this
+
+    }
+
     override fun initViews() = with(binding){
        //todo: chipGroupListener
 
         //todo: textChangeListener
         viewModel.mutableShippingCompany.observe(this@TrackingActivity){
-            showCompanies()
+            showRecommendCompanies()
             viewModel.mutableTrackingState.value = TrackingState.Success
         }
 
@@ -40,16 +49,43 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
             else ->Unit
         }
     }
-    private fun showCompanies()= with(binding){
+    private fun showRecommendCompanies()= with(binding){
 
-        viewModel.shippingCompanies.forEach {company->
+        viewModel.shippingCompanies.take(20).forEach {company->
             carrierNameChipGroup?.addView(
                 Chip(this@TrackingActivity).apply {
                     text =company.name
                 }
             )
         }
+        viewModel.mutableCompanyListIsShowing.value = true
         pickCarrierNameLayout.isVisible = true
+    }
+    private fun showAllCompanies()= with(binding){
+
+        viewModel.shippingCompanies.take(30).forEach {company->
+            carrierNameChipGroup?.addView(
+                Chip(this@TrackingActivity).apply {
+                    text =company.name
+                }
+            )
+        }
+        viewModel.mutableCompanyListIsShowing.value = true
+        pickCarrierNameLayout.isVisible = true
+    }
+
+    fun onClickMore() = with(binding){
+        showAllCompanies()
+        showMoreCarrierNameTv.isVisible = false
+    }
+    fun onClickShowCarrierNameView() = with(binding){
+        carrierNameChipGroup.removeAllViews()
+        showMoreCarrierNameTv.isVisible = true
+        showRecommendCompanies()
+    }
+    fun onClickHideCarrierNameView() = with(binding){
+        pickCarrierNameLayout.isVisible = false
+        viewModel.mutableCompanyListIsShowing.value = false
     }
     private fun handlingLoadingState() = with(binding){
         progressBar.isVisible = true

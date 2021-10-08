@@ -1,6 +1,7 @@
 package com.jcy.trackingshipment.presentation.trackingItem
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jcy.trackingshipment.data.entity.ShippingCompanies
@@ -15,7 +16,10 @@ class TrackingViewModel(
 ): BaseViewModel() {
 
     val mutableTrackingState = MutableLiveData<TrackingState>(TrackingState.Uninitialized)
-    var mutableShippingCompany = MutableLiveData<List<ShippingCompany>>()
+    val mutableCompanyListIsShowing = MutableLiveData<Boolean>(false)
+    val companyListIsShowing : LiveData<Boolean>
+        get() = mutableCompanyListIsShowing
+    val mutableShippingCompany = MutableLiveData<List<ShippingCompany>>()
     var shippingCompanies : List<ShippingCompany> = listOf()
 
     override fun fetchData(): Job = viewModelScope.launch {

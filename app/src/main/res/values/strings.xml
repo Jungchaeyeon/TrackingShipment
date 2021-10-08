@@ -5,4 +5,5 @@
     <string name="pick_tracking_company">택배 회사 선택하기</string>
     <string name="hide">숨기기</string>
     <string name="do_tracking">조회하기</string>
+    <string name="more">더보기</string>
 </resources>
