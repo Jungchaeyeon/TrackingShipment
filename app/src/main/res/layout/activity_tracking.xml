@@ -135,6 +135,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="@{vm.isValidInput}"
                         android:layout_margin="16dp"
+                        android:onClick="@{()->vm.onClickTracking()}"
                         android:background="@drawable/bg_btn_yellow"
                         android:fontFamily="@font/scdream5"
                         android:text="@string/do_tracking" />

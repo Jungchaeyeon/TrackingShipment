@@ -5,14 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.jcy.trackingshipment.data.entity.ShippingCompany
+import com.jcy.trackingshipment.data.entity.TrackingItem
 
 @Database(
-    entities = [ShippingCompany::class],
+    entities = [ShippingCompany::class, TrackingItem::class],
     version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase(){
     abstract fun shippingCompanyDao(): ShippingCompanyDao
+    abstract fun trackingItemDao(): TrackingItemDao
 
     companion object{
         private const val DATABASE_NAME ="tracking.db"

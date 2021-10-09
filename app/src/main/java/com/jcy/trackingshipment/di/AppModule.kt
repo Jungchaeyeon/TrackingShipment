@@ -8,6 +8,8 @@ import com.jcy.trackingshipment.data.preference.PreferenceManager
 import com.jcy.trackingshipment.data.preference.SharedPreferenceManager
 import com.jcy.trackingshipment.data.repository.ShippingCompanyRepository
 import com.jcy.trackingshipment.data.repository.ShippingCompanyRepositoryImpl
+import com.jcy.trackingshipment.data.repository.TrackingItemRepository
+import com.jcy.trackingshipment.data.repository.TrackingItemRepositoryImpl
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingActivity
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,13 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 val appModule = module{
-    single { TrackingViewModel(get()) }
+    single { TrackingViewModel(get(),get()) }
 
     single { Dispatchers.IO }
 
     // Database
     single { AppDatabase.build(androidApplication()) }
     single { get<AppDatabase>().shippingCompanyDao() }
+    single { get<AppDatabase>().trackingItemDao() }
 
     // Preference
     single { androidContext().getSharedPreferences("preference", Activity.MODE_PRIVATE) }
@@ -62,6 +65,6 @@ val appModule = module{
 
     //Repository
     single<ShippingCompanyRepository> { ShippingCompanyRepositoryImpl( get(), get(),get(),get()) }
-
+    single<TrackingItemRepository> { TrackingItemRepositoryImpl(get(), get(), get()) }
 
 }

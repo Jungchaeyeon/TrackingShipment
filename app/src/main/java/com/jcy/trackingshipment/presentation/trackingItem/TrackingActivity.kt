@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.databinding.ActivityTrackingBinding
+import com.jcy.trackingshipment.extension.ToastUtil
 import com.jcy.trackingshipment.presentation.base.BaseActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,7 +24,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         binding.vm = viewModel
         binding.vi = this
         binding.lifecycleOwner = this
-
+        observeState()
     }
 
     override fun initViews() = with(binding){
@@ -39,7 +40,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         }
 
     }
-    override fun observeData() = viewModel.mutableTrackingState.observe(this){
+    private fun observeState() = viewModel.mutableTrackingState.observe(this){
         when(it){
 
             is TrackingState.Loading ->{
@@ -52,6 +53,17 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
                 Toast.makeText(this, it.messageId, Toast.LENGTH_SHORT).show()
             }
             else ->Unit
+        }
+    }
+
+    override fun observeData() = with(viewModel){
+        deliveryResponse.observe(::getLifecycle) {
+            it?.let {
+                Log.e("getTrackingInfo", deliveryResponse.value.toString())
+                insert()
+                ToastUtil.showLong(R.string.add_new_delivery_insert_complete)
+                viewModel.mutableTrackingState.value = TrackingState.Success
+            }
         }
     }
     private fun showRecommendCompanies()= with(binding){
