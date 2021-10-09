@@ -47,10 +47,30 @@
                     android:drawablePadding="16dp"
                     android:fontFamily="@font/scdream3"
                     android:hint="@string/tracking_number"
+                    android:text="@={vm.trackId}"
+                    android:textSize="20sp"
                     android:minHeight="48dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/carrierNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/bg_edittext"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="16dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/scdream3"
+                    tools:text="택배 회사 선택"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.carrierName}"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/searchIdEdit"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/showCarrierNameBtn"
@@ -63,7 +83,7 @@
                     android:onClick="@{()->vi.onClickShowCarrierNameView()}"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchIdEdit" />
+                    app:layout_constraintTop_toBottomOf="@id/carrierNameTv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/hideCarrierNameBtn"
@@ -74,7 +94,7 @@
                     android:visibleIf="@{vm.companyListIsShowing}"
                     android:text="@string/hide"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchIdEdit"
+                    app:layout_constraintTop_toBottomOf="@id/carrierNameTv"
                     android:onClick="@{()->vi.onClickHideCarrierNameView()}"
                     tools:visibility="visible" />
 
@@ -87,14 +107,14 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchIdEdit"
+                    app:layout_constraintTop_toBottomOf="@id/carrierNameTv"
                     tools:visibility="visible">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/carrierNameChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="6dp"
+                        android:paddingHorizontal="16dp"
                         app:chipSpacingHorizontal="4dp"
                         app:chipSpacingVertical="4dp"
                         app:selectionRequired="true"
@@ -113,6 +133,7 @@
                         android:id="@+id/trackingBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.isValidInput}"
                         android:layout_margin="16dp"
                         android:background="@drawable/bg_btn_yellow"
                         android:fontFamily="@font/scdream5"

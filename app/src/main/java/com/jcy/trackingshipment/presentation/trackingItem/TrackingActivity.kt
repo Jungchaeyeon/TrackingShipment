@@ -1,10 +1,12 @@
 package com.jcy.trackingshipment.presentation.trackingItem
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
+import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.databinding.ActivityTrackingBinding
 import com.jcy.trackingshipment.presentation.base.BaseActivity
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -25,9 +27,12 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
     }
 
     override fun initViews() = with(binding){
-       //todo: chipGroupListener
+        binding?.carrierNameChipGroup?.setOnCheckedChangeListener { group, checkedId ->
+            group.findViewById<Chip>(checkedId)?.let {
+                viewModel.carrierName.postValue(it.text.toString())
+            } ?: viewModel.carrierName.postValue(null)
+        }
 
-        //todo: textChangeListener
         viewModel.mutableShippingCompany.observe(this@TrackingActivity){
             showRecommendCompanies()
             viewModel.mutableTrackingState.value = TrackingState.Success
@@ -55,6 +60,12 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
             carrierNameChipGroup?.addView(
                 Chip(this@TrackingActivity).apply {
                     text =company.name
+                    isCheckable = true
+                    isClickable = true
+                    setTextColor(Color.WHITE)
+                    setEnsureMinTouchTargetSize(false)
+                    checkedIcon = null
+                    chipBackgroundColor = resources.getColorStateList(R.color.color_add_chip_bg)
                 }
             )
         }
@@ -67,6 +78,12 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
             carrierNameChipGroup?.addView(
                 Chip(this@TrackingActivity).apply {
                     text =company.name
+                    isCheckable = true
+                    isClickable = true
+                    setTextColor(Color.WHITE)
+                    setEnsureMinTouchTargetSize(false)
+                    checkedIcon = null
+                    chipBackgroundColor = resources.getColorStateList(R.color.color_add_chip_bg)
                 }
             )
         }
