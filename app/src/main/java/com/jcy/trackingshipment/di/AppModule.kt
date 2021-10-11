@@ -4,6 +4,8 @@ import android.app.Activity
 import com.jcy.trackingshipment.data.api.SweetTrackerApi
 import com.jcy.trackingshipment.data.api.Url
 import com.jcy.trackingshipment.data.db.AppDatabase
+import com.jcy.trackingshipment.data.db.TrackingItemDao
+import com.jcy.trackingshipment.data.db.TrackingItemDaoImpl
 import com.jcy.trackingshipment.data.preference.PreferenceManager
 import com.jcy.trackingshipment.data.preference.SharedPreferenceManager
 import com.jcy.trackingshipment.data.repository.ShippingCompanyRepository
@@ -32,6 +34,8 @@ val appModule = module{
     single { AppDatabase.build(androidApplication()) }
     single { get<AppDatabase>().shippingCompanyDao() }
     single { get<AppDatabase>().trackingItemDao() }
+
+
 
     // Preference
     single { androidContext().getSharedPreferences("preference", Activity.MODE_PRIVATE) }

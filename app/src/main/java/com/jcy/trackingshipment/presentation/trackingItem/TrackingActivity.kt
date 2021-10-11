@@ -6,18 +6,22 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.databinding.ActivityTrackingBinding
 import com.jcy.trackingshipment.extension.ToastUtil
+import com.jcy.trackingshipment.extension.ToastUtil.Companion.showShort
 import com.jcy.trackingshipment.presentation.base.BaseActivity
+import com.jcy.trackingshipment.presentation.trackingItem.adapter.DeliveryItemAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding>() {
 
 
     override val viewModel by viewModel<TrackingViewModel>()
-
+    private lateinit var adapter: DeliveryItemAdapter
     override fun getViewBinding(): ActivityTrackingBinding = ActivityTrackingBinding.inflate(layoutInflater)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,8 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         binding.vi = this
         binding.lifecycleOwner = this
         observeState()
+        initAdapters()
+        initSwipeRefresh()
     }
 
     override fun initViews() = with(binding){
@@ -39,6 +45,18 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
             viewModel.mutableTrackingState.value = TrackingState.Success
         }
 
+    }
+    private fun initAdapters(){
+        adapter = DeliveryItemAdapter(this,{delivery ->  
+
+        },{delivery -> viewModel.delete(delivery)
+            Snackbar.make(
+                this, binding.root, getString(R.string.delete_complete), Snackbar.LENGTH_LONG,
+
+            ).setAction("취소"){viewModel.rollback(delivery)}
+                .show()
+        })
+        binding.trakingItemRv.adapter = adapter
     }
     private fun observeState() = viewModel.mutableTrackingState.observe(this){
         when(it){
@@ -57,6 +75,19 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
     }
 
     override fun observeData() = with(viewModel){
+
+        isRefreshing.observe(::getLifecycle){isRefreshing->
+            isRefreshing?.let {
+            if(isRefreshing == true)showShort("조회 목록이 업데이트 되었습니다:)")
+            else showShort("조회 목록이 비었습니다.")
+                binding.swipeLayout.isRefreshing = false
+            }
+        }
+        allTrackingItems.observe(::getLifecycle) {
+                adapter.setItemList(it)
+                viewModel.mutableTrackingState.value = TrackingState.Success
+                onClickHideCarrierNameView()
+            }
         deliveryResponse.observe(::getLifecycle) {
             it?.let {
                 Log.e("getTrackingInfo", deliveryResponse.value.toString())
@@ -65,6 +96,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
                 viewModel.mutableTrackingState.value = TrackingState.Success
             }
         }
+
     }
     private fun showRecommendCompanies()= with(binding){
 
@@ -121,6 +153,14 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
     }
     private fun handlingSuccessState() = with(binding){
         progressBar.isVisible = false
+    }
+
+    private fun initSwipeRefresh() =with(binding){
+        swipeLayout.apply {
+            setColorSchemeResources(android.R.color.holo_blue_light)
+            setOnRefreshListener { viewModel.updateAll() }
+            viewModel.mutableTrackingState.postValue(TrackingState.Success)
+        }
     }
 
 

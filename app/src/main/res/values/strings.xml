@@ -12,4 +12,9 @@
     <string name="dialog_guide_close_text">확인</string>
     <string name="base_error_https">운송장 번호가 존재하지 않거나 아직 상품이\n준비중 입니다</string>
     <string name="add_new_delivery_insert_complete">택배를 추가하였습니다.</string>
+    <string name="delete">삭제</string>
+    <string name="delete_complete">삭제되었습니다.</string>
+
+    <string name="delivery_item_name">물품명 : %s</string>
+    <string name="delivery_item_from">보내시는 분 : %s</string>
 </resources>

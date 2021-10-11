@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="delivery"
+            type="com.jcy.trackingshipment.data.entity.model.Delivery" />
+
+        <variable
+            name="status"
+            type="com.jcy.trackingshipment.data.entity.Level" />
+    </data>
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:minHeight="72dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/deleteBtnLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@android:color/holo_red_dark"
+            android:paddingStart="36dp"
+            android:paddingEnd="36dp">
+
+            <ImageView
+                android:id="@+id/deleteImgView"
+                app:layout_constraintBottom_toTopOf="@id/textView_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_delete_48" />
+
+            <TextView
+                android:id="@+id/textView_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/deleteImgView"
+                app:layout_constraintStart_toStartOf="@id/deleteImgView"
+                app:layout_constraintTop_toBottomOf="@id/deleteImgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/statusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/scdream6"
+                android:gravity="start|center_vertical"
+                android:singleLine="true"
+                android:text="@{delivery.status.label}"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/linearLayout_info_area"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="배송완료" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout_info_area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/statusTv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/deliveryItemTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/scdream4"
+                    android:maxEms="15"
+                    android:singleLine="true"
+                    android:text="@{@string/delivery_item_name(delivery.itemName)}"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="물품명" />
+
+                <TextView
+                    android:id="@+id/senderNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/scdream3"
+                    android:maxEms="12"
+                    android:singleLine="true"
+                    android:text="@{@string/delivery_item_from(delivery.senderName)}"
+                    android:textColor="@color/textColor"
+                    android:textSize="12sp"
+                    tools:text="보내는 사람: 홍길동" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.daimajia.swipe.SwipeLayout>
+</layout>

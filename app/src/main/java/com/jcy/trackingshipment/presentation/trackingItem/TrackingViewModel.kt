@@ -2,14 +2,12 @@ package com.jcy.trackingshipment.presentation.trackingItem
 
 import android.opengl.ETC1.isValid
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.jcy.trackingshipment.data.entity.ShippingCompanies
 import com.jcy.trackingshipment.data.entity.ShippingCompany
 import com.jcy.trackingshipment.data.entity.TrackingInfo
 import com.jcy.trackingshipment.data.entity.TrackingItem
+import com.jcy.trackingshipment.data.entity.model.Delivery
 import com.jcy.trackingshipment.data.repository.ShippingCompanyRepository
 import com.jcy.trackingshipment.data.repository.TrackingItemRepository
 import com.jcy.trackingshipment.extension.addSourceList
@@ -34,8 +32,12 @@ class TrackingViewModel(
     var selectedShippingCompany : ShippingCompany? = null
 
     val deliveryResponse = MutableLiveData<TrackingInfo?>()
+    val isRefreshing: MutableLiveData<Boolean?> = MutableLiveData()
 
-
+    val allTrackingItems = liveData {
+        val fromDB: LiveData<List<Delivery>> = trackingItemRepository.getAllTrackingItems().asLiveData()
+        emitSource(fromDB)
+    }
 
     var isValidInput = MediatorLiveData<Boolean>().apply {
         addSourceList(carrierName, trackId) { isValid() }
@@ -55,17 +57,39 @@ class TrackingViewModel(
                 it
             )
         }?.let {
-            trackingItemRepository.saveTrackingItem(
+            trackingItemRepository.insertTrackingItem(
                 it
             )
         }
         }
 
 
+    fun rollback(delivery: Delivery) = viewModelScope.launch { trackingItemRepository.rollback(delivery) }
+
+    fun delete(trackingItem: Delivery) = viewModelScope.launch { trackingItemRepository.deleteTrackingItem(trackingItem) }
+
 
     override fun fetchData(): Job = viewModelScope.launch {
         getShippingCompanies()
+        updateAll()
     }
+
+    fun updateAll() = viewModelScope.launch {
+        allTrackingItems.value
+                .takeIf { !it.isNullOrEmpty() }
+                ?.let {
+                    update(it)
+                    isRefreshing.postValue(true)
+                } ?: isRefreshing.postValue(false)
+    }
+    private suspend fun update(list: List<Delivery>){
+        list.map {
+            handle {trackingItemRepository.getTrackingInformation(it.invoice, it.carrierName,) }?.toDelivery(
+                it.id, it.carrierName, it.itemName,it.status,it.invoice,it.company)
+            }.apply { trackingItemRepository.updateAll(this.filterNotNull()) }
+        }
+
+
      fun getShippingCompanies() =viewModelScope.launch {
          mutableTrackingState.value = TrackingState.Loading
          shippingCompanies = shippingCompanyRepository.getShippingCompananies()

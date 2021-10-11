@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.jcy.trackingshipment.data.entity.ShippingCompany
 import com.jcy.trackingshipment.data.entity.TrackingItem
+import com.jcy.trackingshipment.data.entity.model.Delivery
 
 @Database(
-    entities = [ShippingCompany::class, TrackingItem::class],
+    entities = [ShippingCompany::class, Delivery::class],
     version = 1,
     exportSchema = false
 )
