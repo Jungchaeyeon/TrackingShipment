@@ -2,6 +2,7 @@ package com.jcy.trackingshipment.data.entity
 
 
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import com.jcy.trackingshipment.data.entity.model.Delivery
 import kotlinx.parcelize.Parcelize
@@ -47,7 +48,7 @@ data class TrackingInfo(
     @SerializedName("msg")
 val errorMessage: String? = null
 ): Parcelable {
-    fun toDelivery(id:Long?, itemName: String?, carrierName: String?,status: Level?, invoice: String,shippingCompany: ShippingCompany)=
+    fun toDelivery(id:Long?, itemName: String?, carrierName: String?,status: Level?, invoice: String,shippingCompany: ShippingCompany?)=
         Delivery(
             id = id,
             carrierName = carrierName ?: "",
@@ -56,7 +57,8 @@ val errorMessage: String? = null
             receiverName= receivername?: "",
             status = status ?: Level.PREPARE,
             invoice = invoice,
-            company= shippingCompany
+            company= shippingCompany ?: ShippingCompany("",""),
+            trackingHistorys = trackingDetails ?: listOf()
 
         )
 

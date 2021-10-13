@@ -20,10 +20,10 @@ class TrackingViewModel(
     private val trackingItemRepository: TrackingItemRepository
 ): BaseViewModel() {
 
+    val isRefreshing: MutableLiveData<Boolean?> = MutableLiveData()
     val mutableTrackingState = MutableLiveData<TrackingState>(TrackingState.Uninitialized)
     val mutableCompanyListIsShowing = MutableLiveData<Boolean>(false)
-    val companyListIsShowing : LiveData<Boolean>
-        get() = mutableCompanyListIsShowing
+
     val mutableShippingCompany = MutableLiveData<List<ShippingCompany>>()
     var shippingCompanies : List<ShippingCompany> = listOf()
 
@@ -32,16 +32,14 @@ class TrackingViewModel(
     var selectedShippingCompany : ShippingCompany? = null
 
     val deliveryResponse = MutableLiveData<TrackingInfo?>()
-    val isRefreshing: MutableLiveData<Boolean?> = MutableLiveData()
-
     val allTrackingItems = liveData {
         val fromDB: LiveData<List<Delivery>> = trackingItemRepository.getAllTrackingItems().asLiveData()
         emitSource(fromDB)
     }
-
     var isValidInput = MediatorLiveData<Boolean>().apply {
         addSourceList(carrierName, trackId) { isValid() }
     }
+
 
     fun onClickTracking()= viewModelScope.launch {
         mutableTrackingState.postValue(TrackingState.Loading)
@@ -90,7 +88,7 @@ class TrackingViewModel(
         }
 
 
-     fun getShippingCompanies() =viewModelScope.launch {
+     private fun getShippingCompanies() =viewModelScope.launch {
          mutableTrackingState.value = TrackingState.Loading
          shippingCompanies = shippingCompanyRepository.getShippingCompananies()
          mutableShippingCompany.postValue(shippingCompanies)

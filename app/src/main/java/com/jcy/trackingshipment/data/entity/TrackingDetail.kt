@@ -2,6 +2,7 @@ package com.jcy.trackingshipment.data.entity
 
 
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -36,5 +37,5 @@ data class TrackingDetail(
     @SerializedName("trans_where")
     val transWhere: String?,
     @SerializedName("where")
-    val where: String?
+    val `where`: String?
 ): Parcelable

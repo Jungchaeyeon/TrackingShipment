@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jcy.trackingshipment.R
+import com.jcy.trackingshipment.data.entity.TrackingDetail
 import com.jcy.trackingshipment.data.entity.model.Delivery
 import com.jcy.trackingshipment.databinding.ItemTrackingBinding
 

@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.jcy.trackingshipment.data.entity.Level
 import com.jcy.trackingshipment.data.entity.ShippingCompany
+import com.jcy.trackingshipment.data.entity.TrackingDetail
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -19,5 +20,6 @@ data class Delivery(
     val receiverName: String,
     val status: Level,
     val invoice: String,
+    val trackingHistorys: List<TrackingDetail>,
     @Embedded val company: ShippingCompany
 ): Parcelable

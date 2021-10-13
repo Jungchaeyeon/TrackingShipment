@@ -6,6 +6,7 @@ import com.jcy.trackingshipment.data.api.Url
 import com.jcy.trackingshipment.data.db.AppDatabase
 import com.jcy.trackingshipment.data.db.TrackingItemDao
 import com.jcy.trackingshipment.data.db.TrackingItemDaoImpl
+import com.jcy.trackingshipment.data.entity.TrackingInfo
 import com.jcy.trackingshipment.data.preference.PreferenceManager
 import com.jcy.trackingshipment.data.preference.SharedPreferenceManager
 import com.jcy.trackingshipment.data.repository.ShippingCompanyRepository
@@ -14,6 +15,7 @@ import com.jcy.trackingshipment.data.repository.TrackingItemRepository
 import com.jcy.trackingshipment.data.repository.TrackingItemRepositoryImpl
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingActivity
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingViewModel
+import com.jcy.trackingshipment.presentation.trackinghistory.TrackingHistoryViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,8 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 val appModule = module{
-    single { TrackingViewModel(get(),get()) }
-
+    single {TrackingViewModel(get(),get()) }
+    single{ TrackingHistoryViewModel()}
     single { Dispatchers.IO }
 
     // Database

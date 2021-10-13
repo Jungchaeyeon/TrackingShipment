@@ -1,6 +1,7 @@
 package com.jcy.trackingshipment.presentation.trackingItem
 
 import androidx.annotation.StringRes
+import com.jcy.trackingshipment.data.entity.TrackingDetail
 
 sealed class TrackingState{
     object Uninitialized: TrackingState()
@@ -8,6 +9,7 @@ sealed class TrackingState{
     object Loading: TrackingState()
 
     object Success: TrackingState()
+
 
 
     data class Error(

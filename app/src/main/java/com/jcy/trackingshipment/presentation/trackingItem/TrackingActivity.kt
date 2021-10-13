@@ -8,11 +8,14 @@ import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.jcy.trackingshipment.R
+import com.jcy.trackingshipment.data.entity.TrackingDetail
+import com.jcy.trackingshipment.data.entity.model.Delivery
 import com.jcy.trackingshipment.databinding.ActivityTrackingBinding
 import com.jcy.trackingshipment.extension.ToastUtil
 import com.jcy.trackingshipment.extension.ToastUtil.Companion.showShort
 import com.jcy.trackingshipment.presentation.base.BaseActivity
 import com.jcy.trackingshipment.presentation.trackingItem.adapter.DeliveryItemAdapter
+import com.jcy.trackingshipment.presentation.trackinghistory.TrackingHistoryFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding>() {
@@ -42,13 +45,13 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
 
         viewModel.mutableShippingCompany.observe(this@TrackingActivity){
             showRecommendCompanies()
-            viewModel.mutableTrackingState.value = TrackingState.Success
         }
 
     }
     private fun initAdapters(){
-        adapter = DeliveryItemAdapter(this,{delivery ->  
-
+        adapter = DeliveryItemAdapter(this,{delivery ->
+            TrackingHistoryFragment.newInstance(delivery.trackingHistorys as ArrayList<TrackingDetail>)
+                .show(supportFragmentManager, null)
         },{delivery -> viewModel.delete(delivery)
             Snackbar.make(
                 this, binding.root, getString(R.string.delete_complete), Snackbar.LENGTH_LONG,

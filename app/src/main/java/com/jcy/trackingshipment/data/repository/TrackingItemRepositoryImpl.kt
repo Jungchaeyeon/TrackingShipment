@@ -49,7 +49,8 @@ class TrackingItemRepositoryImpl(
                 company = trackingItem.company,
                 senderName = trackingInfo.senderName?:"",
                 receiverName = trackingInfo.receivername?:"",
-                carrierName = trackingDetail?.manName?:""
+                carrierName = trackingDetail?.manName?:"",
+                trackingHistorys = trackingInfo.trackingDetails ?: listOf()
         ))
     }
     override suspend fun updateAll(deliveryList: List<Delivery>) = trackingItemDao.updateAll(deliveryList)
