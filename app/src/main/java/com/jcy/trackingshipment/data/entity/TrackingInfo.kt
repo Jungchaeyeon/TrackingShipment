@@ -52,7 +52,7 @@ val errorMessage: String? = null
         Delivery(
             id = id,
             carrierName = carrierName ?: "",
-            itemName= itemName?: "",
+            itemName= itemName?: "정보없음",
             senderName= senderName?: "",
             receiverName= receivername?: "",
             status = status ?: Level.PREPARE,

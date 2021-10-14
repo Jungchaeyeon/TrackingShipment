@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.data.entity.TrackingDetail
+import com.jcy.trackingshipment.data.entity.model.Timepoint
 import com.jcy.trackingshipment.databinding.FragmentTrackingHistoryBinding
 import com.jcy.trackingshipment.presentation.base.BaseBottomSheetDialogFragment
 
@@ -13,9 +14,9 @@ class TrackingHistoryFragment: BaseBottomSheetDialogFragment() {
     companion object {
         const val HISTORY = "history"
         fun newInstance(
-            historys: ArrayList<TrackingDetail>
+            historyitems: ArrayList<TrackingDetail>
         ) = TrackingHistoryFragment().apply {
-            arguments = Bundle().apply { putParcelableArrayList(HISTORY, historys) }
+            arguments = Bundle().apply { putParcelableArrayList(HISTORY, historyitems) }
         }
     }
 
@@ -27,8 +28,15 @@ class TrackingHistoryFragment: BaseBottomSheetDialogFragment() {
         inflater, R.layout.fragment_tracking_history,container
     ).apply {
         lifecycleOwner = viewLifecycleOwner
-        this.trackingHistoryRv.adapter = TrackingHistoryListAdapter().apply {
-            setItemList(arguments?.getParcelableArrayList(HISTORY)?: ArrayList<TrackingDetail>())
+        this.trackingHistoryRv.adapter = TimeLineListAdapter().apply {
+
+            val list = arguments?.getParcelableArrayList(HISTORY)?: ArrayList<TrackingDetail>()
+            list.forEach{
+                addHistory(it)
+                addTimeLine(Timepoint("",""))
+            }
         }
     }.root
+
+
 }

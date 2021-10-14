@@ -9,14 +9,16 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.data.entity.TrackingDetail
-import com.jcy.trackingshipment.data.entity.model.Delivery
 import com.jcy.trackingshipment.databinding.ActivityTrackingBinding
 import com.jcy.trackingshipment.extension.ToastUtil
 import com.jcy.trackingshipment.extension.ToastUtil.Companion.showShort
+import com.jcy.trackingshipment.extension.hideKeyboard
 import com.jcy.trackingshipment.presentation.base.BaseActivity
 import com.jcy.trackingshipment.presentation.trackingItem.adapter.DeliveryItemAdapter
 import com.jcy.trackingshipment.presentation.trackinghistory.TrackingHistoryFragment
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+
 
 class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding>() {
 
@@ -34,7 +36,10 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         observeState()
         initAdapters()
         initSwipeRefresh()
+
     }
+
+
 
     override fun initViews() = with(binding){
         binding?.carrierNameChipGroup?.setOnCheckedChangeListener { group, checkedId ->
@@ -46,12 +51,17 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         viewModel.mutableShippingCompany.observe(this@TrackingActivity){
             showRecommendCompanies()
         }
-
     }
     private fun initAdapters(){
-        adapter = DeliveryItemAdapter(this,{delivery ->
-            TrackingHistoryFragment.newInstance(delivery.trackingHistorys as ArrayList<TrackingDetail>)
-                .show(supportFragmentManager, null)
+        adapter = DeliveryItemAdapter(this,{
+
+            val array = arrayListOf<TrackingDetail>()
+            it.forEach { item->
+                array.add(item) }
+
+            TrackingHistoryFragment.newInstance(array)
+                    .show(supportFragmentManager, null)
+
         },{delivery -> viewModel.delete(delivery)
             Snackbar.make(
                 this, binding.root, getString(R.string.delete_complete), Snackbar.LENGTH_LONG,
@@ -69,6 +79,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
             }
             is TrackingState.Success ->{
                 handlingSuccessState()
+                Log.e("log", viewModel.deliveryResponse.value.toString())
             }
             is TrackingState.Error ->{
                 Toast.makeText(this, it.messageId, Toast.LENGTH_SHORT).show()
@@ -81,9 +92,10 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
 
         isRefreshing.observe(::getLifecycle){isRefreshing->
             isRefreshing?.let {
-            if(isRefreshing == true)showShort("조회 목록이 업데이트 되었습니다:)")
-            else showShort("조회 목록이 비었습니다.")
+                if(isRefreshing == true) showShort("조회 목록이 업데이트 되었습니다:)")
+                else showShort("조회 목록이 비었습니다.")
                 binding.swipeLayout.isRefreshing = false
+
             }
         }
         allTrackingItems.observe(::getLifecycle) {
@@ -116,8 +128,6 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
                 }
             )
         }
-        viewModel.mutableCompanyListIsShowing.value = true
-        pickCarrierNameLayout.isVisible = true
     }
     private fun showAllCompanies()= with(binding){
 
@@ -134,8 +144,6 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
                 }
             )
         }
-        viewModel.mutableCompanyListIsShowing.value = true
-        pickCarrierNameLayout.isVisible = true
     }
 
     fun onClickMore() = with(binding){
@@ -145,7 +153,10 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
     fun onClickShowCarrierNameView() = with(binding){
         carrierNameChipGroup.removeAllViews()
         showMoreCarrierNameTv.isVisible = true
+        viewModel.mutableCompanyListIsShowing.value = true
         showRecommendCompanies()
+        pickCarrierNameLayout.isVisible = true
+        hideKeyboard(this.root)
     }
     fun onClickHideCarrierNameView() = with(binding){
         pickCarrierNameLayout.isVisible = false
@@ -162,7 +173,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         swipeLayout.apply {
             setColorSchemeResources(android.R.color.holo_blue_light)
             setOnRefreshListener { viewModel.updateAll() }
-            viewModel.mutableTrackingState.postValue(TrackingState.Success)
+            viewModel.mutableTrackingState.value = TrackingState.Success
         }
     }
 

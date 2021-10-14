@@ -29,7 +29,7 @@ class TrackingViewModel(
 
     val carrierName = MutableLiveData<String>().apply { value= "택배회사선택" }
     val trackId = MutableLiveData<String>()
-    var selectedShippingCompany : ShippingCompany? = null
+    var selectedShippingCompany : ShippingCompany? = ShippingCompany("04","CJ대한통운")
 
     val deliveryResponse = MutableLiveData<TrackingInfo?>()
     val allTrackingItems = liveData {
@@ -43,10 +43,11 @@ class TrackingViewModel(
 
     fun onClickTracking()= viewModelScope.launch {
         mutableTrackingState.postValue(TrackingState.Loading)
-        selectedShippingCompany = shippingCompanies?.find { it.name == carrierName.value }
+        //selectedShippingCompany = shippingCompanies.find { it.name.toString() == carrierName.value.toString() }
         deliveryResponse.postValue(
             handle {  trackingItemRepository.getTrackingInformation(selectedShippingCompany?.code!!, trackId.value?.trim()!!) }
         )
+        mutableTrackingState.postValue(TrackingState.Success)
     }
     fun insert() = viewModelScope.launch {
         selectedShippingCompany?.let {
@@ -82,9 +83,16 @@ class TrackingViewModel(
     }
     private suspend fun update(list: List<Delivery>){
         list.map {
-            handle {trackingItemRepository.getTrackingInformation(it.invoice, it.carrierName,) }?.toDelivery(
-                it.id, it.carrierName, it.itemName,it.status,it.invoice,it.company)
-            }.apply { trackingItemRepository.updateAll(this.filterNotNull()) }
+            handle {trackingItemRepository.getTrackingInformation(it.invoice, it.carrierName) }?.toDelivery(
+                id= it.id,
+                carrierName = it.carrierName,
+                itemName = it.itemName,
+                status = it.status,
+                invoice = it.invoice,
+                shippingCompany = it.company,
+
+                )
+        }.apply { trackingItemRepository.updateAll(this.filterNotNull()) }
         }
 
 

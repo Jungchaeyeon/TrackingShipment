@@ -3,6 +3,7 @@ package com.jcy.trackingshipment.data.repository
 import com.jcy.trackingshipment.data.api.SweetTrackerApi
 import com.jcy.trackingshipment.data.db.TrackingItemDao
 import com.jcy.trackingshipment.data.entity.Level
+import com.jcy.trackingshipment.data.entity.TrackingDetail
 import com.jcy.trackingshipment.data.entity.TrackingInfo
 import com.jcy.trackingshipment.data.entity.TrackingItem
 import com.jcy.trackingshipment.data.entity.model.Delivery

@@ -9,10 +9,12 @@ import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.data.entity.TrackingDetail
 import com.jcy.trackingshipment.data.entity.model.Delivery
 import com.jcy.trackingshipment.databinding.ItemTrackingBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DeliveryItemAdapter(
     private val activity: Activity,
-    private val itemClick: (Delivery) -> Unit,
+    private val itemClick: (List<TrackingDetail>) -> Unit,
     private val itemDelete: (Delivery) -> Unit
 
 ): RecyclerView.Adapter<DeliveryItemAdapter.DeliveryItemViewHolder>() {
@@ -44,16 +46,16 @@ class DeliveryItemAdapter(
 
     inner class DeliveryItemViewHolder(private val binding: ItemTrackingBinding) :
             RecyclerView.ViewHolder(binding.root){
-                fun bind(delivery: Delivery){
+                fun bind(delivery: Delivery?){
                     binding.delivery = delivery
 
                     binding.deleteBtnLayout.setOnClickListener {
-                        itemDelete(delivery)
+                        itemDelete(delivery!!)
                     }
                     binding.itemContainer.setOnClickListener {
                         binding.swipeLayout.close()
                         if(!binding.deleteBtnLayout.isShown){
-                            itemClick(delivery)
+                            delivery?.let { deliveryItem -> itemClick(deliveryItem.trackingHistorys) }
                         }
                     }
 
