@@ -1,4 +1,4 @@
-package com.jcy.trackingshipment.presentation.trackinghistory
+package com.jcy.trackingshipment.presentation.trackinghistory.adapter
 
 interface ViewType {
 

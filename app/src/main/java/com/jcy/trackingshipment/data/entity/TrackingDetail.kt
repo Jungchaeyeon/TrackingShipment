@@ -2,9 +2,8 @@ package com.jcy.trackingshipment.data.entity
 
 
 import android.os.Parcelable
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
-import com.jcy.trackingshipment.presentation.trackinghistory.ViewType
+import com.jcy.trackingshipment.presentation.trackinghistory.adapter.ViewType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -39,6 +38,6 @@ data class TrackingDetail(
     val transWhere: String?,
     @SerializedName("where")
     val `where`: String?
-): Parcelable, ViewType{
+): Parcelable, ViewType {
     override fun getViewType() = ViewType.ITEM
 }

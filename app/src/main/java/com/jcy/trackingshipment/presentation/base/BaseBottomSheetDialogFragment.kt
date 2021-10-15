@@ -32,10 +32,10 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
             .apply {
                 setOnShowListener {
                     var fullScreenHeight = 0
+
                     if (checkSDKVersion())
                         fullScreenHeight = window?.decorView!!.run {
-                            height - rootWindowInsets.run { this.systemWindowInsetBottom +
-                                    this.systemWindowInsetTop}
+                            height - (getStatusHeight() +getNavigationBarHeight())
                         }
                     fullScreenHeight -= resources.getDimensionPixelSize(R.dimen.bottom_sheet_top_margin)
                     findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
@@ -49,7 +49,16 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 }
             }
     }
-
+    private fun getStatusHeight(): Int {
+        val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return if (resId > 0) resources.getDimensionPixelSize(resId)
+        else 0
+    }
+    private fun getNavigationBarHeight(): Int {
+        val resId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resId > 0) resources.getDimensionPixelSize(resId)
+        else 0
+    }
     private fun checkSDKVersion() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
 }

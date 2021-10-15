@@ -1,6 +1,6 @@
 package com.jcy.trackingshipment.data.entity.model
 
-import com.jcy.trackingshipment.presentation.trackinghistory.ViewType
+import com.jcy.trackingshipment.presentation.trackinghistory.adapter.ViewType
 
 
 data class Timepoint(val timepoint: String,

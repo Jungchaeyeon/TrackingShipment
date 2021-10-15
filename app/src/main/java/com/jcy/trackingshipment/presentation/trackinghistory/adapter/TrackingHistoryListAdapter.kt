@@ -1,4 +1,4 @@
-package com.jcy.trackingshipment.presentation.trackinghistory
+package com.jcy.trackingshipment.presentation.trackinghistory.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,7 +24,7 @@ class TrackingHistoryListAdapter : ViewTypeDelegateAdapter {
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
-        holder as TrackingHistoryListAdapter.ViewHolder
+        holder as ViewHolder
         holder.bind(item as TrackingDetail)
     }
 

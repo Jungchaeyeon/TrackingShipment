@@ -1,4 +1,4 @@
-package com.jcy.trackingshipment.presentation.trackinghistory
+package com.jcy.trackingshipment.presentation.trackinghistory.adapter
 
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat

@@ -14,7 +14,4 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppBottomSheetDialogStyle" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="android:colorBackground">@android:color/transparent</item>
-    </style>
 </resources>

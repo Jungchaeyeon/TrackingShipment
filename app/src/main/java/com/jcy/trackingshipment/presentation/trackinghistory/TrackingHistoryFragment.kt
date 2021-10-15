@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import com.jcy.trackingshipment.R
 import com.jcy.trackingshipment.data.entity.TrackingDetail
 import com.jcy.trackingshipment.data.entity.model.Timepoint
-import com.jcy.trackingshipment.databinding.FragmentTrackingHistoryBinding
+import com.jcy.trackingshipment.databinding.BottomSheetDialogFragmentBinding
 import com.jcy.trackingshipment.presentation.base.BaseBottomSheetDialogFragment
+import com.jcy.trackingshipment.presentation.trackinghistory.adapter.TimeLineListAdapter
 
 class TrackingHistoryFragment: BaseBottomSheetDialogFragment() {
 
@@ -24,8 +25,8 @@ class TrackingHistoryFragment: BaseBottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = binding<FragmentTrackingHistoryBinding>(
-        inflater, R.layout.fragment_tracking_history,container
+    ) = binding<BottomSheetDialogFragmentBinding>(
+        inflater, R.layout.bottom_sheet_dialog_fragment,container
     ).apply {
         lifecycleOwner = viewLifecycleOwner
         this.trackingHistoryRv.adapter = TimeLineListAdapter().apply {
