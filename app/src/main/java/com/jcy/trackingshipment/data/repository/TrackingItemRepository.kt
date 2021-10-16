@@ -11,6 +11,8 @@ interface TrackingItemRepository {
     //DB에서 저장된 아이템 가져옥;
     fun getAllTrackingItems(): Flow<List<Delivery>>
 
+    fun getAllTrackingItemList() : List<Delivery>
+
     //서버에서 조회 정보 가져오기
     suspend fun getTrackingInformation(companyCode: String, invoice: String): TrackingInfo?
 

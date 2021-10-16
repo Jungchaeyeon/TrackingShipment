@@ -11,6 +11,9 @@ interface TrackingItemDao {
     @Query("SELECT * FROM Delivery")
     fun getAllTrackingItems(): Flow<List<Delivery>>
 
+    @Query("SELECT * FROM Delivery")
+    fun getAllTrackingItemList(): List<Delivery>
+
     @Update
     suspend fun updateAll(deliveryList: List<Delivery>)
 

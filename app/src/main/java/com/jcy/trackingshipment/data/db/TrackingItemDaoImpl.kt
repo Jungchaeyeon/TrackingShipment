@@ -8,6 +8,8 @@ class TrackingItemDaoImpl(
     ) : TrackingItemDao{
     override fun getAllTrackingItems(): Flow<List<Delivery>> = deliveryDao.getAllTrackingItems()
 
+    override fun getAllTrackingItemList(): List<Delivery> = deliveryDao.getAllTrackingItemList()
+
 
     override suspend fun updateAll(deliveryList: List<Delivery>) = deliveryDao.updateAll(deliveryList)
 

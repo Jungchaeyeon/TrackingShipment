@@ -23,6 +23,8 @@ class TrackingItemRepositoryImpl(
     override fun getAllTrackingItems(): Flow<List<Delivery>> =
         trackingItemDao.getAllTrackingItems().distinctUntilChanged().flowOn(dispatcher)
 
+    override fun getAllTrackingItemList() : List<Delivery> = trackingItemDao.getAllTrackingItemList()
+
 
     override suspend fun getTrackingInformation(companyCode: String, invoice: String): TrackingInfo? =
         trackerApi.getTrackingApi(companyCode, invoice)

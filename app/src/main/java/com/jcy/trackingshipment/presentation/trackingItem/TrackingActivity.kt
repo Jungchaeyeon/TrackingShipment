@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.work.*
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.jcy.trackingshipment.R
@@ -16,8 +17,10 @@ import com.jcy.trackingshipment.extension.hideKeyboard
 import com.jcy.trackingshipment.presentation.base.BaseActivity
 import com.jcy.trackingshipment.presentation.trackingItem.adapter.DeliveryItemAdapter
 import com.jcy.trackingshipment.presentation.trackinghistory.TrackingHistoryFragment
+import com.jcy.trackingshipment.work.TrackingCheckWorker
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding>() {
@@ -36,7 +39,7 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         observeState()
         initAdapters()
         initSwipeRefresh()
-
+        initWorker()
     }
 
 
@@ -51,6 +54,26 @@ class TrackingActivity : BaseActivity<TrackingViewModel, ActivityTrackingBinding
         viewModel.mutableShippingCompany.observe(this@TrackingActivity){
             showRecommendCompanies()
         }
+    }
+    private fun initWorker(){
+
+        val dailyTrackinCheckRequest =
+            //PeriodicWorkRequestBuilder - 여러 번 실행할 작업의 요청을 나타내는 클래스
+            PeriodicWorkRequestBuilder<TrackingCheckWorker>(1, TimeUnit.DAYS)
+                .setInitialDelay(3, TimeUnit.HOURS)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR, //일정시간, 몇초뒤에몇초뒤에
+                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                    TimeUnit.MILLISECONDS
+                )
+                .build()
+
+        WorkManager.getInstance(this) //이렇게 진행해주십시요.. 를 지정
+            .enqueueUniquePeriodicWork( //반복하는 작업이므로
+                "DailyTrackingCheck",
+                ExistingPeriodicWorkPolicy.KEEP, //이미 존재하는 작업이면 기존의 작업을 유지
+                dailyTrackinCheckRequest
+            )
     }
     private fun initAdapters(){
         adapter = DeliveryItemAdapter(this,{

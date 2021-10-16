@@ -16,6 +16,7 @@ import com.jcy.trackingshipment.data.repository.TrackingItemRepositoryImpl
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingActivity
 import com.jcy.trackingshipment.presentation.trackingItem.TrackingViewModel
 import com.jcy.trackingshipment.presentation.trackinghistory.TrackingHistoryViewModel
+import com.jcy.trackingshipment.work.AppWorkerFactory
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,6 +39,8 @@ val appModule = module{
     single { get<AppDatabase>().trackingItemDao() }
 
 
+    //Work
+    single{AppWorkerFactory(get(),get())}
 
     // Preference
     single { androidContext().getSharedPreferences("preference", Activity.MODE_PRIVATE) }
