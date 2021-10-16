@@ -1,7 +1,7 @@
 # TrackingShipment
 ### 택배 조회 앱
 
-❗ gradle.properties 파일에 SWEET_TRACKER_API_KEY 를 추가해야합니다.
+❗ 주의사항 : gradle.properties 파일에 자신의 SWEET_TRACKER_API_KEY 를 추가해야합니다.
 
 <p>
   <img src="https://user-images.githubusercontent.com/63052973/137572719-13cf074d-f890-46cd-a9f5-f9ecb18d8f5e.png" width="250" height="600">
