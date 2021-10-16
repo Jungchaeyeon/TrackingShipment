@@ -12,10 +12,10 @@
 
 
 ## 구현 기능
-택배 조회 api를 통해 실시간 택배 배송정보를 조회합니다.
-저장된 택배 item들을 swipe하여 삭제할 수 있습니다.
-현재 아이템 배송정보를 타임라인으로 보여줍니다.
-(진행중) 배송정보 알림구현
+택배 조회 api를 통해 실시간 택배 배송정보를 조회합니다. </br>
+저장된 택배 item들을 swipe하여 삭제할 수 있습니다.</br>
+현재 아이템 배송정보를 타임라인으로 보여줍니다.</br>
+(진행중) 배송정보 알림구현</br>
 
 ## 기술 스택
 MVVM, DataBinding, Coroutine, Room , Retrofit2, Okhttp3, Glide, ConstraintLayout, Koin
